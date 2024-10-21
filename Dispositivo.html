@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rileva il Dispositivo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Benvenuto!</h1>
+    <p id="deviceInfo"></p>
+    
+    <script>
+        const userID = "Vincenzo123"; // ID univoco per te
+
+        function getRandomMessage() {
+            const messages = [
+                "Oggi è una bella giornata!",
+                "Stai utilizzando il miglior dispositivo!",
+                "Continua a fare cose fantastiche!",
+                "Questo è un messaggio casuale."
+            ];
+            return messages[Math.floor(Math.random() * messages.length)];
+        }
+
+        function getDeviceType() {
+            const ua = navigator.userAgent;
+            let deviceInfo = "Stai utilizzando: ";
+
+            if (/android/i.test(ua)) {
+                deviceInfo += "un telefono Android, modello ";
+            } else if (/iPhone|iPad|iPod/i.test(ua)) {
+                deviceInfo += "un dispositivo iOS, modello ";
+            } else {
+                deviceInfo += "un dispositivo diverso o un computer.";
+                return deviceInfo;
+            }
+
+            const parser = new UAParser();
+            const result = parser.getResult();
+            deviceInfo += result.device.model ? result.device.model : "non specificato";
+
+            return deviceInfo;
+        }
+
+        function displayMessage() {
+            const currentID = prompt("Inserisci il tuo ID:");
+            if (currentID === userID) {
+                document.getElementById("deviceInfo").innerText = getDeviceType();
+            } else {
+                document.getElementById("deviceInfo").innerText = getRandomMessage();
+            }
+        }
+
+        // Aggiungi lo script di UAParser.js
+        (function() {
+            var script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/UAParser.js/0.7.30/ua-parser.min.js';
+            script.onload = displayMessage;
+            document.head.appendChild(script);
+        })();
+    </script>
+</body>
+</html>
